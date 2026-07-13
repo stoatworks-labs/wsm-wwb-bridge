@@ -13,8 +13,15 @@ that can produce a CSV, via a generic column-mapping importer.
 ## Run it
 
 ```
-python3 main.py
+./run.sh
 ```
+
+On macOS, run via `run.sh` rather than calling `python3 main.py` directly if
+your `python3` resolves to Apple's system/Command Line Tools install — it
+bundles Tcl/Tk 8.5.9, which has well-documented bugs on modern macOS
+(blank, non-rendering, unresponsive windows). `run.sh` prefers a Homebrew
+Python if one's on your machine and warns if it has to fall back to a
+broken Tk version. If you hit that warning: `brew install python-tk`.
 
 No dependencies beyond the Python 3 standard library (uses `tkinter`, which
 ships with the standard macOS/python.org installer).
