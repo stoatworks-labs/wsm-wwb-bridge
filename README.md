@@ -10,6 +10,8 @@ that can produce a CSV, via a generic column-mapping importer.
 > these files — verify against your own WWB/WSM versions before relying on
 > this for a live show.
 
+![WSM-WWB Bridge showing a loaded Sennheiser WSM export with 4 channels](docs/screenshot.png)
+
 ## Run it
 
 ```
