@@ -1,14 +1,14 @@
 # WSM-WWB Bridge
 
+> **AI-assisted project.** This codebase was created with [Claude](https://claude.com/claude-code)
+> (Anthropic), directed and reviewed by a human author. Every format parser was
+> reverse-engineered from real exports rather than from official documentation, since
+> neither vendor publishes full schemas for most of these files — verify against your
+> own WWB/WSM versions before relying on this for a live show.
+
 Moves radio mic frequency coordination data between Shure Wireless Workbench
 (WWB) and Sennheiser Wireless Systems Manager (WSM) — plus any other tool
 that can produce a CSV, via a generic column-mapping importer.
-
-> Built with [Claude Code](https://claude.com/claude-code). Every format
-> parser was reverse-engineered from real exports rather than from official
-> documentation, since neither vendor publishes full schemas for most of
-> these files — verify against your own WWB/WSM versions before relying on
-> this for a live show.
 
 ![WSM-WWB Bridge showing a loaded Sennheiser WSM export with 4 channels](docs/screenshot.png)
 
