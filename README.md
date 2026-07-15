@@ -12,6 +12,23 @@ that can produce a CSV, via a generic column-mapping importer.
 
 ![WSM-WWB Bridge showing a loaded Sennheiser WSM export with 4 channels](docs/screenshot.png)
 
+Everything routes through one internal channel model, so any supported input
+format can be re-exported as any supported output format:
+
+```mermaid
+flowchart LR
+    SHW[".shw / .cws (WWB XML)"] --> MODEL
+    WWBR["WWB coordination report CSV"] --> MODEL
+    WSMX[".wsm (WSM XML)"] --> MODEL
+    WSMH["WSM HTML report"] --> MODEL
+    WSMC["WSM Frequencies/Bands CSV"] --> MODEL
+    FREQ["Bare frequency list"] --> MODEL
+    ANY["Any other CSV → column-map dialog"] --> MODEL
+    MODEL["Channel / CoordinationList<br/>(internal model)"] --> WFREQ["WWB frequency list (safe import)"]
+    MODEL --> WINV["WWB inventory CSV"]
+    MODEL --> WSMOUT["WSM Frequencies/Bands CSV"]
+```
+
 ## Run it
 
 ```
