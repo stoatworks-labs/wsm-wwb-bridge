@@ -1,0 +1,122 @@
+name: release
+
+# Freeze the Tkinter app with PyInstaller for Windows, macOS and Linux
+# (x64 + arm64). Linux jobs also emit .deb/.rpm via nfpm.
+# Trigger manually (Actions > release > Run workflow) or by pushing a v* tag.
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { name: linux-x86_64,    os: ubuntu-latest,    pkgarch: amd64 }
+          - { name: linux-aarch64,   os: ubuntu-24.04-arm, pkgarch: arm64 }
+          - { name: windows-x86_64,  os: windows-latest }
+          - { name: windows-aarch64, os: windows-11-arm }
+          - { name: macos-x86_64,    os: macos-13 }
+          - { name: macos-aarch64,   os: macos-14 }
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install PyInstaller
+        run: python -m pip install --upgrade pip pyinstaller
+
+      - name: Derive version
+        id: ver
+        shell: bash
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            echo "version=${GITHUB_REF#refs/tags/v}" >> "$GITHUB_OUTPUT"
+          else
+            echo "version=0.1.0-dev.${GITHUB_RUN_NUMBER}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build (PyInstaller)
+        run: pyinstaller --noconfirm --clean --windowed --onefile --name wsm-wwb-bridge main.py
+
+      - name: Stage output
+        shell: bash
+        run: |
+          mkdir -p out
+          if [[ "${{ matrix.os }}" == windows* ]]; then
+            cp dist/wsm-wwb-bridge.exe out/
+          elif [[ "${{ matrix.os }}" == macos* ]]; then
+            # --windowed yields a .app bundle on macOS
+            if [ -d "dist/wsm-wwb-bridge.app" ]; then cp -R "dist/wsm-wwb-bridge.app" out/; else cp dist/wsm-wwb-bridge out/; fi
+          else
+            cp dist/wsm-wwb-bridge out/
+          fi
+          ls -la out
+
+      - name: Package .deb/.rpm (Linux only)
+        if: startsWith(matrix.os, 'ubuntu')
+        shell: bash
+        env:
+          PKGARCH: ${{ matrix.pkgarch }}
+          VERSION: ${{ steps.ver.outputs.version }}
+        run: |
+          go install github.com/goreleaser/nfpm/v2/cmd/nfpm@v2.41.1
+          export PATH="$(go env GOPATH)/bin:$PATH"
+          cat > nfpm.yaml <<EOF
+          name: wsm-wwb-bridge
+          arch: ${PKGARCH}
+          version: "${VERSION}"
+          maintainer: Allan Sargeant <allan.sargeant@gmail.com>
+          description: Bridge radio-mic coordination data between Shure WWB and Sennheiser WSM
+          license: MIT
+          contents:
+            - src: out/wsm-wwb-bridge
+              dst: /usr/bin/wsm-wwb-bridge
+          EOF
+          nfpm package -f nfpm.yaml -p deb
+          nfpm package -f nfpm.yaml -p rpm
+
+      - name: Archive
+        shell: bash
+        run: |
+          cd out
+          if [[ "${{ matrix.os }}" == windows* ]]; then
+            7z a "../wsm-wwb-bridge-${{ matrix.name }}.zip" ./*
+          else
+            tar czf "../wsm-wwb-bridge-${{ matrix.name }}.tar.gz" ./*
+          fi
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: wsm-wwb-bridge-${{ matrix.name }}
+          path: |
+            *.zip
+            *.tar.gz
+            *.deb
+            *.rpm
+          if-no-files-found: error
+
+  release:
+    name: Publish release
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/**/*
+          generate_release_notes: true
