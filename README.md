@@ -52,6 +52,49 @@ broken Tk version. If you hit that warning: `brew install python-tk`.
 No dependencies beyond the Python 3 standard library (uses `tkinter`, which
 ships with the standard macOS/python.org installer).
 
+## Unsigned prebuilt binaries — macOS Gatekeeper & Windows SmartScreen
+
+If you'd rather grab the prebuilt release binary than run from source, note it
+is **not code-signed or notarized** — that needs paid Apple / Windows developer
+certificates this project doesn't carry. It's safe to run; the OS just can't
+verify a publisher, so it warns you the first time.
+
+### macOS
+
+The macOS build is a `wsm-wwb-bridge.app` bundle. On first launch macOS says it
+**"is damaged"** or **"cannot be opened because the developer cannot be
+verified"** — that's Gatekeeper reacting to the missing signature. Easiest fix:
+**right-click (Control-click) the app → Open → Open** (once). If it still says
+*"damaged"*, clear the quarantine flag:
+
+```sh
+xattr -dr com.apple.quarantine "wsm-wwb-bridge.app"
+```
+
+### Windows
+
+The `wsm-wwb-bridge.exe` may trip SmartScreen (**"Windows protected your PC"**) →
+**More info → Run anyway**. Or right-click → **Properties** → **Unblock** →
+**OK**.
+
+### Linux
+
+No signing gate — `chmod +x` the binary (or install the `.deb`/`.rpm`).
+
+### Signing it yourself (optional)
+
+macOS ad-hoc (local only, not notarized):
+
+```sh
+codesign --force --deep --sign - "wsm-wwb-bridge.app"
+```
+
+Distributing without warnings needs an **Apple Developer Program** membership
+($99/yr) + a *Developer ID Application* certificate — sign with the hardened
+runtime and notarize the zipped `.app` with `xcrun notarytool submit … --wait`,
+then `xcrun stapler staple`. On Windows, clearing SmartScreen needs an
+Authenticode code-signing certificate (`signtool sign`).
+
 ## Testing
 
 ```
