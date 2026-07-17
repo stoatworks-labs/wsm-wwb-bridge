@@ -92,7 +92,7 @@ class ColumnMappingDialog(tk.Toplevel):
 
 
 class App:
-    def __init__(self, master):
+    def __init__(self, master, initial_path=None):
         self.master = master
         master.title("WSM-WWB Bridge")
         master.geometry("900x520")
@@ -102,6 +102,9 @@ class App:
 
         self._build_menu()
         self._build_layout()
+
+        if initial_path:
+            self.load_path(initial_path)
 
     def _build_menu(self):
         menubar = tk.Menu(self.master)
@@ -169,6 +172,9 @@ class App:
         )
         if not path:
             return
+        self.load_path(path)
+
+    def load_path(self, path):
         try:
             with open(path, "r", encoding="utf-8-sig") as f:
                 text = f.read()
@@ -250,8 +256,11 @@ class App:
 
 
 def main():
+    import sys
+
+    initial_path = sys.argv[1] if len(sys.argv) > 1 else None
     root = tk.Tk()
-    App(root)
+    App(root, initial_path=initial_path)
     root.mainloop()
 
 

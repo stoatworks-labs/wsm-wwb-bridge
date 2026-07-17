@@ -29,4 +29,4 @@ case "$TK_VERSION" in
         ;;
 esac
 
-exec "$PYTHON" main.py
+exec "$PYTHON" main.py "$@"

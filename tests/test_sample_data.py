@@ -7,6 +7,7 @@ from pathlib import Path
 from wsm_wwb_bridge.detect import detect_format
 from wsm_wwb_bridge.wsm import read_wsm_csv
 from wsm_wwb_bridge.wwb import read_wwb_file
+from wsm_wwb_bridge.wwb_report import read_wwb_report_csv
 
 SAMPLE_DATA = Path(__file__).resolve().parent.parent / "sample_data"
 
@@ -39,6 +40,20 @@ class TestSampleWwbFrequencyList(unittest.TestCase):
         cl = read_wwb_file(_read("sample_wwb_frequency_list.txt"))
         self.assertEqual(len(cl), 4)
         self.assertAlmostEqual(cl.channels[0].frequency_mhz, 606.250)
+
+
+class TestSampleWwbReport(unittest.TestCase):
+    """Used as the README screenshot fixture -- also exercised as a real test."""
+
+    def test_detects_as_wwb_report(self):
+        self.assertEqual(detect_format(_read("sample_wwb_report.csv")), "wwb-report")
+
+    def test_parses_four_channels_across_two_zones(self):
+        cl = read_wwb_report_csv(_read("sample_wwb_report.csv"))
+        self.assertEqual(len(cl), 4)
+        zones = {c.zone for c in cl}
+        self.assertEqual(zones, {"Main Stage", "Monitor World"})
+        self.assertTrue(all(not c.is_backup for c in cl))
 
 
 if __name__ == "__main__":

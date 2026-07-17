@@ -1,5 +1,9 @@
 # WSM-WWB Bridge
 
+[![tests](https://github.com/allansargeant/wsm-wwb-bridge/actions/workflows/test.yml/badge.svg)](https://github.com/allansargeant/wsm-wwb-bridge/actions/workflows/test.yml)
+[![release](https://github.com/allansargeant/wsm-wwb-bridge/actions/workflows/release.yml/badge.svg)](https://github.com/allansargeant/wsm-wwb-bridge/actions/workflows/release.yml)
+[![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 > **AI-assisted project.** This codebase was created with [Claude](https://claude.com/claude-code)
 > (Anthropic), directed and reviewed by a human author. Every format parser was
 > reverse-engineered from real exports rather than from official documentation, since
@@ -10,7 +14,7 @@ Moves radio mic frequency coordination data between Shure Wireless Workbench
 (WWB) and Sennheiser Wireless Systems Manager (WSM) — plus any other tool
 that can produce a CSV, via a generic column-mapping importer.
 
-![WSM-WWB Bridge showing a loaded Sennheiser WSM export with 4 channels](docs/screenshot.png)
+![WSM-WWB Bridge showing a loaded WWB coordination report with 4 channels across two RF zones](docs/screenshot.png)
 
 Everything routes through one internal channel model, so any supported input
 format can be re-exported as any supported output format:
@@ -35,6 +39,9 @@ flowchart LR
 ./run.sh
 ```
 
+Optionally pass a file to open it immediately: `./run.sh sample_data/sample_wwb_report.csv`.
+On macOS, dropping a file onto the `.app` icon does the same thing.
+
 On macOS, run via `run.sh` rather than calling `python3 main.py` directly if
 your `python3` resolves to Apple's system/Command Line Tools install — it
 bundles Tcl/Tk 8.5.9, which has well-documented bugs on modern macOS
@@ -51,7 +58,7 @@ ships with the standard macOS/python.org installer).
 ./test.sh
 ```
 
-121 tests covering every parser/writer — frequency notation edge cases,
+123 tests covering every parser/writer — frequency notation edge cases,
 the WWB report's zone/primary/backup state machine, WWB's native XML
 (`.shw`/`.cws`), WSM's native `.wsm` project file (including the
 `AllocatedFrequency` vs. decoy `CurrentFrequency` distinction), the WSM
