@@ -45,6 +45,21 @@ broken Tk version. If you hit that warning: `brew install python-tk`.
 No dependencies beyond the Python 3 standard library (uses `tkinter`, which
 ships with the standard macOS/python.org installer).
 
+## Testing
+
+```
+./test.sh
+```
+
+121 tests covering every parser/writer — frequency notation edge cases,
+the WWB report's zone/primary/backup state machine, WWB's native XML
+(`.shw`/`.cws`), WSM's native `.wsm` project file (including the
+`AllocatedFrequency` vs. decoy `CurrentFrequency` distinction), the WSM
+HTML report (including its malformed `&microV` entity), and round-trips
+through every writer. None of it touches `gui.py` (Tkinter, no headless
+display in CI) — the parsing/formatting logic underneath it is what's
+covered. Runs automatically on push via GitHub Actions.
+
 ## How it works
 
 1. **Open File...** loads a file and auto-detects its shape:
@@ -163,6 +178,7 @@ wsm_wwb_bridge/
   wwb_xml.py     Shure WWB native .shw / .cws XML parser (real format)
   detect.py      Guesses which parser to use for a loaded file
   gui.py         Tkinter app
+tests/                  Unit tests — run with ./test.sh, see Testing above
 sample_data/            Synthetic example files for each format
 ```
 
