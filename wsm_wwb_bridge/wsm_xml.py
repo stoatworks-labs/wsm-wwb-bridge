@@ -27,6 +27,19 @@ def looks_like_wsm_xml(text: str) -> bool:
 
 
 def read_wsm_project(text: str) -> CoordinationList:
+    """Read per-channel coordinated frequencies out of a WSM ``.wsm`` project.
+
+    A ``.wsm`` carries TWO frequency fields per port and they are not
+    interchangeable. In a real coordinated project ``CurrentFrequency`` sat at
+    the receiver's default and did not reflect the coordination result at all,
+    while ``FrequencyManager/Devices/Device/AllocatedFrequency`` matched it. We
+    read AllocatedFrequency — so if WSM shows one number on screen and this tool
+    shows another, that field difference is why, and this one is the coordinated
+    value.
+
+    Frequencies in the file are kHz. A device with no allocated frequency is
+    skipped rather than emitted with a zero.
+    """
     root = ET.fromstring(text)
     result = CoordinationList(source_format="wsm-project")
     devices_el = root.find("FrequencyManager/Devices")

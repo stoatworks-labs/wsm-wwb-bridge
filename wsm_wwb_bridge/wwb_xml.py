@@ -104,6 +104,21 @@ def read_cws_candidates(root) -> CoordinationList:
 
 
 def read_wwb_xml(text: str) -> CoordinationList:
+    """Read a WWB ``.shw`` or ``.cws``, preferring the deployed inventory.
+
+    The two formats hold different things, and a ``.shw`` embeds both: a device
+    inventory (what is actually deployed on the gear) and the coordination
+    workspace (the engine's full candidate frequency pool across all RF zones).
+    When an inventory is present we take it, because "what is on the gear" is
+    almost always what the user meant.
+
+    The practical consequence: the SAME FILE can yield a short deployment list
+    or a very long candidate pool depending on what it contains. A result with
+    far more channels than expected is the candidate pool.
+
+    Neither format exposes a primary/backup flag at the XML level — only the
+    printed coordination report does, via ``wwb_report.read_wwb_report_csv``.
+    """
     root = ET.fromstring(text)
     if root.tag == "show" and root.find(".//inventory/device") is not None:
         return read_shw_inventory(root)

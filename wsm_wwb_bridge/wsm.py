@@ -83,6 +83,19 @@ def read_wsm_csv(text: str) -> CoordinationList:
 
 
 def write_wsm_csv(coord_list: CoordinationList) -> str:
+    """Write WSM's "Frequencies/Bands" CSV.
+
+    THIS IS A CANDIDATE FREQUENCY POOL, NOT A COORDINATED CHANNEL LIST. WSM
+    imports it as the set of frequencies to consider; the user then runs WSM's
+    own "Start Coordination" and drag-allocates results onto device channels.
+    It will not write frequencies onto named channels, and no export does —
+    WSM does not import one.
+
+    The schema is confirmed against a real export and differs from Sennheiser's
+    own documentation, which implies mixed-case headers and different column
+    names. The real file won: lowercase, semicolon-delimited, frequencies in
+    kHz.
+    """
     buf = io.StringIO()
     writer = csv.writer(buf, delimiter=DELIMITER)
     writer.writerow(_HEADER)

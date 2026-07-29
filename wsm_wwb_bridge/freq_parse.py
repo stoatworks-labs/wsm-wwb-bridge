@@ -12,6 +12,22 @@ _KHZ_THRESHOLD = 3000.0
 
 
 def parse_frequency_to_mhz(raw: str) -> float:
+    """Parse a frequency from any of these files and return MHz.
+
+    Everything in this app is MHz internally, but the source files are not
+    consistent — WSM's CSV is in kHz, WWB's is in MHz, and neither carries a
+    unit column. Units are therefore inferred from MAGNITUDE: a value at or
+    above the kHz threshold is divided by 1000. That threshold is a heuristic,
+    not a unit field, so a genuine MHz value above it would be misread. It sits
+    above every radio-mic band in use, but anything reusing this parser outside
+    mic coordination needs to know.
+
+    Commas are handled by context: a comma with NO dot is a decimal separator
+    (``600,768`` -> 600.768), otherwise commas are thousands separators. That is
+    what lets European-locale exports parse with no setting.
+
+    Raises ValueError on an empty or unparseable value.
+    """
     text = raw.strip()
     if not text:
         raise ValueError("empty frequency value")
