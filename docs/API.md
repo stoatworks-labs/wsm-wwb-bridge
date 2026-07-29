@@ -8,7 +8,7 @@ points.
 authority. It is linked, not restated. This document covers the code that reads and writes them.
 
 > **⚠ There are two copies of these parsers.** They were separately ported to TypeScript inside
-> **[RFutils](https://github.com/allansargeant/RFutils)** (`packages/shared`), and **the port was
+> **[RFutils](https://github.com/stoatworks-labs/RFutils)** (`packages/shared`), and **the port was
 > byte-verified against these originals.** Before extending or fixing a parser, work out which
 > copy is canonical for that change — **a fix applied to only one side silently invalidates that
 > byte-verification.**
