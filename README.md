@@ -1,7 +1,7 @@
 # WSM-WWB Bridge
 
-[![tests](https://github.com/allansargeant/wsm-wwb-bridge/actions/workflows/test.yml/badge.svg)](https://github.com/allansargeant/wsm-wwb-bridge/actions/workflows/test.yml)
-[![release](https://github.com/allansargeant/wsm-wwb-bridge/actions/workflows/release.yml/badge.svg)](https://github.com/allansargeant/wsm-wwb-bridge/actions/workflows/release.yml)
+[![tests](https://github.com/stoatworks-labs/wsm-wwb-bridge/actions/workflows/test.yml/badge.svg)](https://github.com/stoatworks-labs/wsm-wwb-bridge/actions/workflows/test.yml)
+[![release](https://github.com/stoatworks-labs/wsm-wwb-bridge/actions/workflows/release.yml/badge.svg)](https://github.com/stoatworks-labs/wsm-wwb-bridge/actions/workflows/release.yml)
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 > **AI-assisted project.** This codebase was created with [Claude](https://claude.com/claude-code)

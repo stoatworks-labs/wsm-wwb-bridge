@@ -7,7 +7,7 @@ A standalone Python/Tkinter desktop tool. Public repo, MIT, 121 tests, CI.
 ## 1. Read this first: there are two copies of these parsers
 
 **The parsers in this repo were separately ported to TypeScript inside
-[RFutils](https://github.com/allansargeant/RFutils), and the port was byte-verified against these
+[RFutils](https://github.com/stoatworks-labs/RFutils), and the port was byte-verified against these
 originals.**
 
 | | Language | Where |

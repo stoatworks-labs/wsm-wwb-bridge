@@ -18,7 +18,7 @@ The formats were read from **WWB 7.8.2.63** and **WSM 4.9.0.13**; a different ve
 
 ### There is a successor
 
-**[RFutils](https://github.com/allansargeant/RFutils)** merged this tool with MicWizard and
+**[RFutils](https://github.com/stoatworks-labs/RFutils)** merged this tool with MicWizard and
 `pmse-to-wwb` into one suite. This repo stays a standalone, MIT-licensed, releasable desktop tool
 — but RFutils is where new feature work goes.
 
