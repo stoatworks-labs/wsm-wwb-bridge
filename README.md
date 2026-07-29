@@ -124,6 +124,14 @@ covered. Runs automatically on push via GitHub Actions.
 2. Preview the parsed channel list in the table (Name, Frequency, Zone, Group, Channel, Type, Manufacturer, Notes).
 3. Pick an export format and **Save As...**.
 
+## Documentation
+
+| Doc | Contents |
+|---|---|
+| [docs/USER-GUIDE.md](docs/USER-GUIDE.md) | The workflow, which file to open for what, which export to choose, troubleshooting |
+| [docs/API.md](docs/API.md) | The module surface, the channel model, format detection order, frequency parsing |
+| [docs/DEVELOPING.md](docs/DEVELOPING.md) | The two-copies rule, the parser discipline, adding a format |
+
 ## Format notes
 
 Neither Shure nor Sennheiser publish schemas for most of these. Everything
