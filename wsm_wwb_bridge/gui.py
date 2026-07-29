@@ -1,8 +1,14 @@
 """Tkinter GUI: load a coordination file, preview it, export to another format."""
 
+import os
+import subprocess
+import sys
 import tkinter as tk
 import xml.etree.ElementTree as ET
 from tkinter import filedialog, messagebox, ttk
+
+from . import diag
+from . import __version__
 
 from .csv_generic import (
     CHANNEL_FIELDS,
@@ -114,6 +120,12 @@ class App:
         filemenu.add_separator()
         filemenu.add_command(label="Quit", command=self.master.quit)
         menubar.add_cascade(label="File", menu=filemenu)
+
+        helpmenu = tk.Menu(menubar, tearoff=0)
+        helpmenu.add_command(label="Collect Diagnostics...", command=self.collect_diagnostics)
+        helpmenu.add_command(label="Open Log Folder", command=self.open_log_folder)
+        menubar.add_cascade(label="Help", menu=helpmenu)
+
         self.master.config(menu=menubar)
         self.master.bind("<Command-o>", lambda e: self.open_file())
         self.master.bind("<Command-s>", lambda e: self.save_file())
@@ -150,6 +162,43 @@ class App:
 
     def _set_status(self, text):
         self.status.config(text=text)
+
+    def collect_diagnostics(self):
+        """Write one file that explains the state of things, and say where it is.
+
+        A GUI has no stdout for the user to read, so the path has to come back
+        through a dialog — and it is offered to the clipboard, because nobody
+        can retype a path out of a message box.
+        """
+        try:
+            path = diag.collect_diagnostics()
+        except OSError as e:
+            messagebox.showerror("Error", f"Could not write diagnostics:\n{e}")
+            return
+
+        diag.log.info("diagnostics bundle written to %s", path)
+        self.master.clipboard_clear()
+        self.master.clipboard_append(str(path))
+        messagebox.showinfo(
+            "Diagnostics collected",
+            f"Written to:\n{path}\n\n"
+            "The path has been copied to your clipboard. Attach that file to a "
+            "bug report — it holds the logs, the settings (with any passwords "
+            "removed) and details of any recent crash.",
+        )
+        self._set_status(f"Diagnostics written to {path}")
+
+    def open_log_folder(self):
+        folder = diag.log_directory()
+        try:
+            if sys.platform == "darwin":
+                subprocess.run(["open", str(folder)], check=False)
+            elif sys.platform == "win32":
+                os.startfile(str(folder))  # noqa: S606 - opening a known folder
+            else:
+                subprocess.run(["xdg-open", str(folder)], check=False)
+        except OSError as e:
+            messagebox.showerror("Error", f"Could not open {folder}:\n{e}")
 
     def _refresh_preview(self):
         self.tree.delete(*self.tree.get_children())
@@ -256,12 +305,30 @@ class App:
 
 
 def main():
-    import sys
+    # Before anything that can fail, so a failure during startup is logged and
+    # captured like any other.
+    diag.init(
+        app="wsm-wwb-bridge",
+        env_prefix="WSM_WWB",
+        version=__version__,
+        config={"argv": sys.argv},
+    )
+
+    if "--collect-diagnostics" in sys.argv:
+        # stdout, so it can be used in a script; logging went to stderr.
+        print(diag.collect_diagnostics())
+        return
 
     initial_path = sys.argv[1] if len(sys.argv) > 1 else None
     root = tk.Tk()
+    # Must come before any callback can run: Tk swallows exceptions raised
+    # inside callbacks, so without this a fault in a button handler never
+    # reaches the crash handler.
+    diag.install_tk_excepthook(root)
+    diag.log.info("starting ui initial_path=%s", initial_path)
     App(root, initial_path=initial_path)
     root.mainloop()
+    diag.log.info("ui closed")
 
 
 if __name__ == "__main__":
