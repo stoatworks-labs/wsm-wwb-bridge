@@ -96,6 +96,26 @@ jobs:
             tar czf "../wsm-wwb-bridge-${{ matrix.name }}.tar.gz" ./*
           fi
 
+      - name: Installers (macOS)
+        if: runner.os == 'macOS'
+        shell: bash
+        # A zipped .app is not an install experience. The .pkg puts it in
+        # /Applications, the .dmg lets people drag it. Ad-hoc signed first:
+        # PyInstaller's bundle is unsigned, and an unsigned bundle is refused
+        # with "is damaged and can't be opened" on Apple Silicon.
+        run: |
+          source scripts/release-lib.sh
+          rl_init "WSM-WWB Bridge" wsm-wwb-bridge \
+            "${{ steps.ver.outputs.version }}" com.stoatworks.wsm-wwb-bridge "$GITHUB_WORKSPACE"
+          app="out/wsm-wwb-bridge.app"
+          if [ -d "$app" ]; then
+            rl_adhoc_sign "$app"
+            rl_dmg "${{ matrix.name }}" out --app "wsm-wwb-bridge.app"
+            rl_pkg "${{ matrix.name }}" out --app "wsm-wwb-bridge.app"
+          else
+            echo "no .app bundle (PyInstaller produced a bare binary), skipping installers"
+          fi
+
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -105,11 +125,56 @@ jobs:
             *.tar.gz
             *.deb
             *.rpm
+            *.dmg
+            *.pkg
+          if-no-files-found: error
+
+  windows-installers:
+    name: Windows installers
+    needs: build
+    runs-on: ubuntu-latest
+    # makensis cross-compiles, so both Windows architectures are wrapped here
+    # from the zips the build jobs uploaded — the arm64 Windows image cannot
+    # execute the 32-bit makensis at all.
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Install NSIS
+        run: sudo apt-get update && sudo apt-get install -y nsis
+
+      - name: Build installers
+        shell: bash
+        run: |
+          source scripts/release-lib.sh
+          version="${GITHUB_REF_NAME#v}"
+          rl_init "WSM-WWB Bridge" wsm-wwb-bridge "$version" \
+            com.stoatworks.wsm-wwb-bridge "$PWD/installers"
+          for arch in x86_64 aarch64; do
+            zip="$(find artifacts -name "wsm-wwb-bridge-windows-${arch}.zip" | head -1)"
+            if [ -z "$zip" ]; then
+              echo "no build artefact for windows-${arch}, skipping"
+              continue
+            fi
+            stage="$RUNNER_TEMP/stage-${arch}"
+            rm -rf "$stage"; mkdir -p "$stage"
+            unzip -q "$zip" -d "$stage"
+            rl_nsis "windows-${arch}" "$stage" --gui "wsm-wwb-bridge.exe"
+          done
+          ls -l installers
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wsm-wwb-bridge-windows-installers
+          path: installers/*
           if-no-files-found: error
 
   release:
     name: Publish release
-    needs: build
+    needs: [build, windows-installers]
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     steps:
