@@ -27,7 +27,7 @@ jobs:
           - { name: macos-x86_64,    os: macos-14, pyi_arch: 'x86_64' }
           - { name: macos-aarch64,   os: macos-14 }
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - uses: actions/setup-python@v5
         with:
@@ -137,7 +137,7 @@ jobs:
     # from the zips the build jobs uploaded — the arm64 Windows image cannot
     # execute the 32-bit makensis at all.
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - uses: actions/download-artifact@v4
         with:
