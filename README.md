@@ -37,6 +37,58 @@ flowchart LR
     MODEL --> WSMOUT["WSM Frequencies/Bands CSV"]
 ```
 
+<!-- downloads:start -->
+
+## Download
+
+**[v1.0.0](https://github.com/stoatworks-labs/wsm-wwb-bridge/releases/tag/v1.0.0)** — prebuilt for macOS, Windows and Linux. Pick your platform:
+
+<details>
+<summary><b>macOS</b> — Apple Silicon, Intel</summary>
+
+| Build | Download | Size |
+| --- | --- | --- |
+| Apple Silicon · .dmg disk image | [`wsm-wwb-bridge-1.0.0-macos-aarch64.dmg`](https://github.com/stoatworks-labs/wsm-wwb-bridge/releases/download/v1.0.0/wsm-wwb-bridge-1.0.0-macos-aarch64.dmg) | 11 MB |
+| Intel · .dmg disk image | [`wsm-wwb-bridge-1.0.0-macos-x86_64.dmg`](https://github.com/stoatworks-labs/wsm-wwb-bridge/releases/download/v1.0.0/wsm-wwb-bridge-1.0.0-macos-x86_64.dmg) | 12 MB |
+| Apple Silicon · .pkg installer | [`wsm-wwb-bridge-1.0.0-macos-aarch64.pkg`](https://github.com/stoatworks-labs/wsm-wwb-bridge/releases/download/v1.0.0/wsm-wwb-bridge-1.0.0-macos-aarch64.pkg) | 11 MB |
+| Intel · .pkg installer | [`wsm-wwb-bridge-1.0.0-macos-x86_64.pkg`](https://github.com/stoatworks-labs/wsm-wwb-bridge/releases/download/v1.0.0/wsm-wwb-bridge-1.0.0-macos-x86_64.pkg) | 11 MB |
+| Apple Silicon · .tar.gz archive | [`wsm-wwb-bridge-macos-aarch64.tar.gz`](https://github.com/stoatworks-labs/wsm-wwb-bridge/releases/latest/download/wsm-wwb-bridge-macos-aarch64.tar.gz) | 11 MB |
+| Intel · .tar.gz archive | [`wsm-wwb-bridge-macos-x86_64.tar.gz`](https://github.com/stoatworks-labs/wsm-wwb-bridge/releases/latest/download/wsm-wwb-bridge-macos-x86_64.tar.gz) | 11 MB |
+
+</details>
+
+<details>
+<summary><b>Windows</b> — x64, ARM64</summary>
+
+| Build | Download | Size |
+| --- | --- | --- |
+| x64 · .exe installer | [`wsm-wwb-bridge-1.0.0-windows-x86_64-setup.exe`](https://github.com/stoatworks-labs/wsm-wwb-bridge/releases/download/v1.0.0/wsm-wwb-bridge-1.0.0-windows-x86_64-setup.exe) | 12 MB |
+| ARM64 · .exe installer | [`wsm-wwb-bridge-1.0.0-windows-aarch64-setup.exe`](https://github.com/stoatworks-labs/wsm-wwb-bridge/releases/download/v1.0.0/wsm-wwb-bridge-1.0.0-windows-aarch64-setup.exe) | 12 MB |
+| x64 · .zip archive | [`wsm-wwb-bridge-windows-x86_64.zip`](https://github.com/stoatworks-labs/wsm-wwb-bridge/releases/latest/download/wsm-wwb-bridge-windows-x86_64.zip) | 12 MB |
+| ARM64 · .zip archive | [`wsm-wwb-bridge-windows-aarch64.zip`](https://github.com/stoatworks-labs/wsm-wwb-bridge/releases/latest/download/wsm-wwb-bridge-windows-aarch64.zip) | 12 MB |
+
+</details>
+
+<details>
+<summary><b>Linux</b> — x64, ARM64</summary>
+
+| Build | Download | Size |
+| --- | --- | --- |
+| x64 · .deb package (Debian/Ubuntu) | [`wsm-wwb-bridge_1.0.0_amd64.deb`](https://github.com/stoatworks-labs/wsm-wwb-bridge/releases/download/v1.0.0/wsm-wwb-bridge_1.0.0_amd64.deb) | 26 MB |
+| ARM64 · .deb package (Debian/Ubuntu) | [`wsm-wwb-bridge_1.0.0_arm64.deb`](https://github.com/stoatworks-labs/wsm-wwb-bridge/releases/download/v1.0.0/wsm-wwb-bridge_1.0.0_arm64.deb) | 25 MB |
+| x64 · .rpm package (Fedora/RHEL) | [`wsm-wwb-bridge-1.0.0-1.x86_64.rpm`](https://github.com/stoatworks-labs/wsm-wwb-bridge/releases/download/v1.0.0/wsm-wwb-bridge-1.0.0-1.x86_64.rpm) | 26 MB |
+| ARM64 · .rpm package (Fedora/RHEL) | [`wsm-wwb-bridge-1.0.0-1.aarch64.rpm`](https://github.com/stoatworks-labs/wsm-wwb-bridge/releases/download/v1.0.0/wsm-wwb-bridge-1.0.0-1.aarch64.rpm) | 25 MB |
+| x64 · .tar.gz archive | [`wsm-wwb-bridge-linux-x86_64.tar.gz`](https://github.com/stoatworks-labs/wsm-wwb-bridge/releases/latest/download/wsm-wwb-bridge-linux-x86_64.tar.gz) | 26 MB |
+| ARM64 · .tar.gz archive | [`wsm-wwb-bridge-linux-aarch64.tar.gz`](https://github.com/stoatworks-labs/wsm-wwb-bridge/releases/latest/download/wsm-wwb-bridge-linux-aarch64.tar.gz) | 25 MB |
+
+</details>
+
+All builds, checksums and release notes: [github.com/stoatworks-labs/wsm-wwb-bridge/releases](https://github.com/stoatworks-labs/wsm-wwb-bridge/releases).
+
+These builds are unsigned, so macOS and Windows each warn once on first launch — see [Unsigned builds — macOS Gatekeeper & Windows SmartScreen](#unsigned-builds--macos-gatekeeper--windows-smartscreen) for the one-time fix.
+
+<!-- downloads:end -->
+
 ## Run it
 
 ```
