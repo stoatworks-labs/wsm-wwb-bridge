@@ -14,7 +14,7 @@ Moves radio mic frequency coordination data between Shure Wireless Workbench
 (WWB) and Sennheiser Wireless Systems Manager (WSM) — plus any other tool
 that can produce a CSV, via a generic column-mapping importer.
 
-[![Watch it running — 46 seconds](docs/video-thumb.png)](https://www.youtube.com/watch?v=D_47KSnsiVQ)
+[![Watch it running — 46 seconds](docs/video-thumb.png)](https://www.youtube.com/watch?v=ZoBX4_d7r9M)
 
 *A 46-second tour of the real app, reading the sample files in `sample_data/`.*
 
