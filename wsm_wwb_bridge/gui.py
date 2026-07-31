@@ -50,7 +50,9 @@ class ColumnMappingDialog(tk.Toplevel):
 
     def __init__(self, parent, header, guessed_mapping):
         super().__init__(parent)
-        self.title("Confirm column mapping")
+        # App-qualified: a bare "Confirm column mapping" says nothing about
+        # which app is asking once it is in the window switcher.
+        self.title("WSM-WWB Bridge - Confirm column mapping")
         self.resizable(False, False)
         self.result = None
         self.header = header
