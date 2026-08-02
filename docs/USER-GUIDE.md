@@ -1,12 +1,11 @@
-# WSM-WWB Bridge — User Guide
+# WSM-WWB Bridge user guide
 
 Moving wireless-mic coordination data between **Shure Wireless Workbench** and **Sennheiser
 Wireless Systems Manager**, plus generic CSV.
 
 ---
 
-## 0. Two things before you use it on a show
-
+## Two things before you use it on a show
 ### Every parser was reverse-engineered
 
 **Neither vendor publishes full schemas for most of these files.** Everything this tool
@@ -24,8 +23,7 @@ The formats were read from **WWB 7.8.2.63** and **WSM 4.9.0.13**; a different ve
 
 ---
 
-## 1. The workflow
-
+## The workflow
 1. **Open File…** — the format is auto-detected.
 2. **Check the preview table** — Name, Frequency, Zone, Group, Channel, Type, Manufacturer,
    Notes.
@@ -36,8 +34,7 @@ designed fallback, not a failure.
 
 ---
 
-## 2. What it can read
-
+## What it can read
 | Source | Format |
 |---|---|
 | **Shure WWB** | `.shw` (Show) and `.cws` (Coordination Workspace) native XML |
@@ -48,7 +45,7 @@ designed fallback, not a failure.
 | | "Frequencies/Bands" CSV export |
 | **Anything else** | via the column-mapping dialog |
 
-### ⚠ Which WWB file you open changes what you get
+### Which WWB file you open changes what you get
 
 - A **`.shw`** carries the **deployed device inventory** — what's actually on the gear. It also
   embeds workspace data, and the reader **prefers the device inventory** when both are present.
@@ -58,7 +55,7 @@ designed fallback, not a failure.
 Those are very different lists. If a file yields far more channels than you expected, you're
 looking at the candidate pool.
 
-### ⚠ Only the WWB report knows primary vs backup
+### Only the WWB report knows primary vs backup
 
 Neither `.shw` nor `.cws` exposes a primary/backup flag at the XML level — **only the printed
 coordination report does.** So if you need "what am I actually using" versus "what's in the spare
@@ -67,7 +64,7 @@ pool", **open the report CSV**, not the native file.
 (The report was verified against a real 291-channel export: 44 primary and 247 backup across 3
 zones, matching the file's own section counts exactly.)
 
-### ⚠ WSM `.wsm` has two frequency fields and they disagree
+### WSM `.wsm` has two frequency fields and they disagree
 
 A real coordinated project had `CurrentFrequency` **sitting at the receiver's default** — not
 reflecting the coordination result at all — while `AllocatedFrequency` matched the real result.
@@ -76,8 +73,7 @@ that's the field difference, and the tool is reading the coordinated one.
 
 ---
 
-## 3. What it can write, and which to choose
-
+## What it can write, and which to choose
 | Target | Use | Why |
 |---|---|---|
 | **WWB frequency list** | **The safe default for WSM → WWB** | The one format Shure documents as importable |
@@ -85,14 +81,14 @@ that's the field difference, and the tool is reading the coordinated one.
 | WSM "Frequencies/Bands" CSV | feeding a candidate pool into WSM | **Not a coordinated channel list** — see below |
 | Generic CSV | anything else | |
 
-### ⚠ Writing `.shw` / `.cws` is deliberately not implemented
+### Writing `.shw` / `.cws` is deliberately not implemented
 
 Those files have many interdependent sections — compatibility profiles, band planning, zone
 matrices — well beyond channel data. Generating one from scratch risks producing a file WWB
 can't open cleanly. **Reading them is safe; the safe way to get data *into* WWB is the frequency
 list import.**
 
-### ⚠ The WSM CSV export does not populate named channels
+### The WSM CSV export does not populate named channels
 
 WSM's "Frequencies/Bands" CSV feeds a **candidate frequency pool** into WSM. You then run WSM's
 own **Start Coordination** and drag-allocate frequencies onto device channels yourself.
@@ -105,18 +101,17 @@ semicolon-delimited — which **differs from Sennheiser's own documentation.** T
 
 ---
 
-## 4. Troubleshooting
-
+## Troubleshooting
 | Symptom | Cause |
 |---|---|
-| **A column-mapping dialog appeared** | The file wasn't recognised. Expected behaviour, not an error (§1). |
-| **Far more channels than expected from a WWB file** | You opened a `.cws`, or a `.shw` whose candidate pool was read — that's the whole candidate pool (§2). |
-| **No primary/backup distinction** | Only the WWB coordination report carries it (§2). |
-| **Frequencies differ from what WSM shows** | WSM's `CurrentFrequency` is often the receiver default; the tool reads `AllocatedFrequency` (§2). |
+| **A column-mapping dialog appeared** | The file wasn't recognised. Expected behaviour, not an error ([The workflow](#the-workflow)). |
+| **Far more channels than expected from a WWB file** | You opened a `.cws`, or a `.shw` whose candidate pool was read — that's the whole candidate pool ([What it can read](#what-it-can-read)). |
+| **No primary/backup distinction** | Only the WWB coordination report carries it ([What it can read](#what-it-can-read)). |
+| **Frequencies differ from what WSM shows** | WSM's `CurrentFrequency` is often the receiver default; the tool reads `AllocatedFrequency` ([What it can read](#what-it-can-read)). |
 | **A European-locale file parsed correctly** | Expected — a comma with no dot is read as a decimal point. |
-| **Imported into WSM and nothing landed on my channels** | The CSV is a candidate pool. Run Start Coordination and allocate (§3). |
-| **Can't export a `.shw`** | Intentional — write-back isn't implemented (§3). |
-| **Output looks wrong against my WWB/WSM version** | Formats were read from WWB 7.8.2.63 / WSM 4.9.0.13. Verify before a show (§0). |
+| **Imported into WSM and nothing landed on my channels** | The CSV is a candidate pool. Run Start Coordination and allocate ([What it can write, and which to choose](#what-it-can-write-and-which-to-choose)). |
+| **Can't export a `.shw`** | Intentional — write-back isn't implemented ([What it can write, and which to choose](#what-it-can-write-and-which-to-choose)). |
+| **Output looks wrong against my WWB/WSM version** | Formats were read from WWB 7.8.2.63 / WSM 4.9.0.13. Verify before a show ([Two things before you use it on a show](#two-things-before-you-use-it-on-a-show)). |
 | **macOS says the app is damaged** | Unsigned build; see the README's Gatekeeper section. |
 
 ---
