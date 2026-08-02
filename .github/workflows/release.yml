@@ -117,7 +117,7 @@ jobs:
           fi
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: wsm-wwb-bridge-${{ matrix.name }}
           path: |
@@ -166,7 +166,7 @@ jobs:
           done
           ls -l installers
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: wsm-wwb-bridge-windows-installers
           path: installers/*
