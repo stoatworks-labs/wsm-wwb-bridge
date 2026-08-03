@@ -17,7 +17,7 @@ LICENCE = "MIT"
 GUIDE = "https://stoatworks-labs.com/software/wsm-wwb-bridge/guide/"
 PAGE = "https://stoatworks-labs.com/software/wsm-wwb-bridge/"
 REPO = "https://github.com/stoatworks-labs/wsm-wwb-bridge"
-VERSION_FALLBACK = ""
+VERSION_FALLBACK = "v1.0.1"
 
 ORG = "Stoatworks Labs"
 HOME = "https://stoatworks-labs.com"
