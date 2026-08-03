@@ -25,6 +25,7 @@ from .wsm_xml import read_wsm_project
 from .wwb import read_wwb_file, write_wwb_frequency_list, write_wwb_inventory_csv
 from .wwb_report import read_wwb_report_csv
 from .wwb_xml import read_wwb_xml
+from .about_dialog import show_about
 
 FIELD_LABELS = {
     "name": "Name",
@@ -124,6 +125,12 @@ class App:
         menubar.add_cascade(label="File", menu=filemenu)
 
         helpmenu = tk.Menu(menubar, tearoff=0)
+        # Vendored from stoatworks-backend/about - see about_dialog.py.
+        helpmenu.add_command(
+            label="About WSM-WWB Bridge",
+            command=lambda: show_about(self.master),
+        )
+        helpmenu.add_separator()
         helpmenu.add_command(label="Collect Diagnostics...", command=self.collect_diagnostics)
         helpmenu.add_command(label="Open Log Folder", command=self.open_log_folder)
         menubar.add_cascade(label="Help", menu=helpmenu)
