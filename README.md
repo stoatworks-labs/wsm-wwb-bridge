@@ -108,15 +108,12 @@ broken Tk version. If you hit that warning: `brew install python-tk`.
 No dependencies beyond the Python 3 standard library (uses `tkinter`, which
 ships with the standard macOS/python.org installer).
 
-## Unsigned builds — macOS Gatekeeper & Windows SmartScreen
+## Windows SmartScreen
 
-The release binaries are **not code-signed or notarized** — that needs paid Apple
-and Microsoft developer certificates this project doesn't carry. The downloads are
-fine; the OS just can't identify the publisher, so it warns you the first time.
+macOS builds are **Developer ID-signed and notarised by Apple** — they open
+normally, with no Gatekeeper warning and no quarantine step. The Windows
+binaries are **not** code-signed, so Windows still warns you the first time.
 
-- **macOS** — *"cannot be opened because the developer cannot be verified"*.
-  Right-click the app → **Open** → **Open**, or clear the flag:
-  `xattr -dr com.apple.quarantine "/Applications/WSM-WWB Bridge.app"`
 - **Windows** — SmartScreen shows *"Windows protected your PC"* →
   **More info** → **Run anyway**.
 - **Linux** — no signing gate.
