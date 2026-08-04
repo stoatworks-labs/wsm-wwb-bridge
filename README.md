@@ -49,7 +49,7 @@ flowchart LR
 | Build | Download | Size |
 | --- | --- | --- |
 | Apple Silicon · .dmg disk image | [`wsm-wwb-bridge-1.0.1-macos-aarch64.dmg`](https://github.com/stoatworks-labs/wsm-wwb-bridge/releases/download/v1.0.1/wsm-wwb-bridge-1.0.1-macos-aarch64.dmg) | 11 MB |
-| Intel · .dmg disk image | [`wsm-wwb-bridge-1.0.1-macos-x86_64.dmg`](https://github.com/stoatworks-labs/wsm-wwb-bridge/releases/download/v1.0.1/wsm-wwb-bridge-1.0.1-macos-x86_64.dmg) | 12 MB |
+| Intel · .dmg disk image | [`wsm-wwb-bridge-1.0.1-macos-x86_64.dmg`](https://github.com/stoatworks-labs/wsm-wwb-bridge/releases/download/v1.0.1/wsm-wwb-bridge-1.0.1-macos-x86_64.dmg) | 11 MB |
 | Apple Silicon · .pkg installer | [`wsm-wwb-bridge-1.0.1-macos-aarch64.pkg`](https://github.com/stoatworks-labs/wsm-wwb-bridge/releases/download/v1.0.1/wsm-wwb-bridge-1.0.1-macos-aarch64.pkg) | 11 MB |
 | Intel · .pkg installer | [`wsm-wwb-bridge-1.0.1-macos-x86_64.pkg`](https://github.com/stoatworks-labs/wsm-wwb-bridge/releases/download/v1.0.1/wsm-wwb-bridge-1.0.1-macos-x86_64.pkg) | 11 MB |
 | Apple Silicon · .tar.gz archive | [`wsm-wwb-bridge-macos-aarch64.tar.gz`](https://github.com/stoatworks-labs/wsm-wwb-bridge/releases/latest/download/wsm-wwb-bridge-macos-aarch64.tar.gz) | 11 MB |
@@ -85,7 +85,7 @@ flowchart LR
 
 All builds, checksums and release notes: [github.com/stoatworks-labs/wsm-wwb-bridge/releases](https://github.com/stoatworks-labs/wsm-wwb-bridge/releases).
 
-These builds are unsigned, so macOS and Windows each warn once on first launch — see [Unsigned builds — macOS Gatekeeper & Windows SmartScreen](#unsigned-builds--macos-gatekeeper--windows-smartscreen) for the one-time fix.
+macOS builds are signed and notarised and open normally. The Windows builds are unsigned, so SmartScreen warns once — see [Windows SmartScreen](#windows-smartscreen) for the one-time click-through.
 
 <!-- downloads:end -->
 
