@@ -273,3 +273,7 @@ real device/coordination data.)
 Every format this tool reads or writes has now been checked against at
 least one real export from the corresponding app; there's no remaining
 placeholder/guessed field.
+
+<!-- attributions:start -->
+This project is built on other people's work — see [ATTRIBUTIONS.md](ATTRIBUTIONS.md).
+<!-- attributions:end -->
