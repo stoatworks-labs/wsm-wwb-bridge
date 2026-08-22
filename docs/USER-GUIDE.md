@@ -112,7 +112,7 @@ semicolon-delimited — which **differs from Sennheiser's own documentation.** T
 | **Imported into WSM and nothing landed on my channels** | The CSV is a candidate pool. Run Start Coordination and allocate ([What it can write, and which to choose](#what-it-can-write-and-which-to-choose)). |
 | **Can't export a `.shw`** | Intentional — write-back isn't implemented ([What it can write, and which to choose](#what-it-can-write-and-which-to-choose)). |
 | **Output looks wrong against my WWB/WSM version** | Formats were read from WWB 7.8.2.63 / WSM 4.9.0.13. Verify before a show ([Two things before you use it on a show](#two-things-before-you-use-it-on-a-show)). |
-| **macOS says the app is damaged** | Unsigned build; see the README's Gatekeeper section. |
+| **macOS says the app is damaged** | The `.dmg` and `.pkg` are signed and notarised. The `.tar.gz` payload is **not** — it is ad-hoc signed, and Gatekeeper refuses it. Take the disk image or the installer. |
 
 ---
 
