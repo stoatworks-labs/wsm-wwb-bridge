@@ -24,8 +24,10 @@ jobs:
           - { name: linux-aarch64,   os: ubuntu-24.04-arm, pkgarch: arm64 }
           - { name: windows-x86_64,  os: windows-latest }
           - { name: windows-aarch64, os: windows-11-arm }
-          - { name: macos-x86_64,    os: macos-14, pyi_arch: 'x86_64' }
-          - { name: macos-aarch64,   os: macos-14 }
+          # ONE macOS build for both architectures. This already built both
+          # on the same runner (x86_64 via --target-architecture on the arm64
+          # image), so universal2 merges them rather than adding a build.
+          - { name: macos-universal, os: macos-14, pyi_arch: 'universal2' }
     steps:
       - uses: actions/checkout@v7
 
@@ -94,6 +96,35 @@ jobs:
             7z a "../wsm-wwb-bridge-${{ matrix.name }}.zip" ./*
           else
             tar czf "../wsm-wwb-bridge-${{ matrix.name }}.tar.gz" ./*
+          fi
+
+      # Prove the bundle really is universal rather than named that way.
+      # Captured and matched with `case`, never piped into grep: steps run as
+      # `bash -eo pipefail`, so grep exiting at its first match SIGPIPEs lipo
+      # and fails the step BECAUSE the match was found.
+      - name: Verify the macOS build is universal
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          found=0
+          while IFS= read -r f; do
+            __archs="$( lipo -archs "$f" 2>/dev/null )" || continue
+            [ -n "$__archs" ] || continue
+            found=$((found+1))
+            echo "$f: $__archs"
+            case "$__archs" in
+              *arm64*) ;;
+              *) echo "expected an arm64 slice in $f, got: $__archs" >&2; exit 1 ;;
+            esac
+            case "$__archs" in
+              *x86_64*) ;;
+              *) echo "expected an x86_64 slice in $f, got: $__archs" >&2; exit 1 ;;
+            esac
+          done < <(find "out" -type f -perm -u+x)
+          # A find that matched nothing would pass every check above in silence.
+          if [ "$found" -lt 1 ]; then
+            echo "found no Mach-O to check under "out"" >&2
+            exit 1
           fi
 
       - name: Installers (macOS)
