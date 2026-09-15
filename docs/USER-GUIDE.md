@@ -3,6 +3,10 @@
 Moving wireless-mic coordination data between **Shure Wireless Workbench** and **Sennheiser
 Wireless Systems Manager**, plus generic CSV.
 
+![A real WWB coordination report loaded: four channels across two RF zones.](screenshot.png)
+
+*A real WWB coordination report loaded: four channels across two RF zones.*
+
 ---
 
 ## Two things before you use it on a show
